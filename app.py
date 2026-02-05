@@ -3,7 +3,7 @@ import streamlit as st
 # --- 1. CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(page_title="Para o Meu Amor ❤️", page_icon="💖", layout="centered")
 
-# --- 2. CSS MASTER: SF PRO, BRANCO NO BOTÃO E CONTRASTE ---
+# --- 2. CSS MASTER (SF PRO & BOTÕES GIGANTES) ---
 def inject_css(yes_size):
     st.markdown(f"""
         <style>
@@ -18,26 +18,24 @@ def inject_css(yes_size):
             background-attachment: fixed;
         }}
 
-        /* --- BUTON YAZI RENGİ VE STİLİ (KRİTİK DÜZELTME) --- */
+        /* BOTÃO TEXTO BRANCO (CRÍTICO) */
         button p {{
-            color: white !important; /* Tüm buton yazıları bembeyaz olacak */
+            color: white !important;
             font-weight: bold !important;
-            font-size: inherit !important;
         }}
 
-        /* Sayfa 1 ve 3: Tekli Büyük Siyah/Koyu Butonlar */
+        /* TELA 1 E 3: BOTÕES ÚNICOS E ESCUROS */
         .stButton > button {{
-            background-color: #1e1e1e !important; /* Fotolardaki gibi koyu/siyah ton */
+            background-color: #1e1e1e !important;
             color: white !important;
             border-radius: 12px !important;
             border: none !important;
             width: 100% !important;
             height: 55px !important;
-            transition: transform 0.2s;
         }}
 
-        /* Sayfa 2: MEKTUP SAYFASI BUTONLARI (İLK KODDAKİ GİBİ) */
-        /* Dev SIM! Butonu */
+        /* TELA DE PEDIDO (ORANTISIZ BUTONLAR) */
+        /* Botão SIM! Gigante */
         div[data-testid="column"]:nth-of-type(1) button {{
             background-color: #ff4b6b !important;
             font-size: {yes_size}px !important;
@@ -49,7 +47,7 @@ def inject_css(yes_size):
             font-size: {yes_size}px !important;
         }}
 
-        /* Küçük Não Butonu */
+        /* Botão Não Pequeno */
         div[data-testid="column"]:nth-of-type(2) button {{
             background-color: #333333 !important;
             font-size: 16px !important;
@@ -57,12 +55,8 @@ def inject_css(yes_size):
             margin-top: 35px !important;
             opacity: 0.8;
         }}
-        
-        div[data-testid="column"]:nth-of-type(2) button p {{
-            font-size: 16px !important;
-        }}
 
-        /* Mektup Kutusu (Yüksek Kontrast) */
+        /* Caixa da Carta (Alta Opacidade) */
         .letter-box {{
             padding: 40px;
             background: rgba(255, 255, 255, 0.98);
@@ -74,64 +68,74 @@ def inject_css(yes_size):
 
         .letter-text {{
             font-size: 19px !important;
-            color: #222222 !important; /* Okunması için çok koyu gri */
+            color: #222222 !important;
             line-height: 1.6;
             text-align: left;
         }}
 
-        /* Başlıklar (Okunabilir Koyu Pembe) */
         h1, h3 {{
             color: #d63384 !important;
             text-align: center !important;
             font-weight: 800 !important;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }}
-        
-        /* Input Alanı */
-        .stTextInput input {{
-            border-radius: 12px !important;
-            border: 2px solid #ff4b6b !important;
-            background-color: #ffffff !important;
-            color: #333333 !important;
         }}
         </style>
     """, unsafe_allow_html=True)
 
-# --- 3. GESTÃO DE ESTADO (STATE) ---
+# --- 3. GESTÃO DE ESTADO (3 PERGUNTAS) ---
 if 'step' not in st.session_state:
-    st.session_state.step = 'quiz'
+    st.session_state.step = 'quiz1'
 if 'yes_size' not in st.session_state:
-    st.session_state.yes_size = 35 # Başlangıçtan itibaren büyük SIM
+    st.session_state.yes_size = 40
 
 inject_css(st.session_state.yes_size)
 
-# --- 4. FLUXO DO APLICATIVO (100% PORTEKİZCE) ---
+# --- 4. FLUXO DO APLICATIVO ---
 
-# --- TELA 1: O TESTE (QUIZ) ---
-if st.session_state.step == 'quiz':
-    st.markdown("<h1>🔐 Uma pequena surpresa...</h1>", unsafe_allow_html=True)
-    st.write("<p style='text-align: center; font-size: 18px; color: #333;'>Precisamos confirmar a chave do nosso coração antes de continuar.</p>", unsafe_allow_html=True)
-    
-    # Gereksiz containerlar kaldırıldı, direkt input
-    cevap = st.text_input("Qual é o nome da música do George Ezra que o Isa te enviou?", placeholder="A música que nos une...")
-    
-    if st.button("Verificar ✨", key="check_btn"):
-        if cevap.lower().strip() == "budapest":
+# PERGUNTA 1: MÚSICA
+if st.session_state.step == 'quiz1':
+    st.markdown("<h1>🔐 Pergunta 1 de 3</h1>", unsafe_allow_html=True)
+    st.write("<p style='text-align: center; font-size: 18px; color: #333;'>Vamos começar com a nossa música...</p>", unsafe_allow_html=True)
+    cevap1 = st.text_input("Qual é o nome da música do George Ezra que o Kayra te enviou?", placeholder="A música que nos une...")
+    if st.button("Continuar ✨", key="btn1"):
+        if cevap1.lower().strip() == "budapest":
+            st.session_state.step = 'quiz2'
+            st.rerun()
+        else:
+            st.error("Ops! Tente novamente, meu amor! 🎵")
+
+# PERGUNTA 2: COMIDA FAVORITA
+elif st.session_state.step == 'quiz2':
+    st.markdown("<h1>🔐 Pergunta 2 de 3</h1>", unsafe_allow_html=True)
+    st.write("<p style='text-align: center; font-size: 18px; color: #333;'>Essa é fácil! Uma sobre o meu gosto...</p>", unsafe_allow_html=True)
+    cevap2 = st.text_input("Qual é a primeira letra da comida favorita do Kayra?", placeholder="Apenas uma letra...")
+    if st.button("Continuar ✨", key="btn2"):
+        if cevap2.lower().strip() == "m":
+            st.session_state.step = 'quiz3'
+            st.rerun()
+        else:
+            st.error("Hummm, não é essa letra. Tente de novo! 🍕")
+
+# PERGUNTA 3: QUEM É VOCÊ?
+elif st.session_state.step == 'quiz3':
+    st.markdown("<h1>🔐 Pergunta 3 de 3</h1>", unsafe_allow_html=True)
+    st.write("<p style='text-align: center; font-size: 18px; color: #333;'>A última para abrir o seu presente!</p>", unsafe_allow_html=True)
+    cevap3 = st.text_input("Quem é você?", placeholder="Dica: começa con 'p' e termina com 'ookie'")
+    if st.button("Abrir meu presente ❤️", key="btn3"):
+        if cevap3.lower().strip() == "pookie":
             st.session_state.step = 'proposal'
             st.balloons()
             st.rerun()
         else:
-            st.error("Ops! Essa não é a música certa. Tente novamente, meu amor! 🎵")
+            st.error("Como você não sabe quem você é?! rsrs Tente de novo! 🥰")
 
-# --- TELA 2: CARTA ROMÂNTICA E PEDIDO ---
+# TELA DE PEDIDO (MEKTUP VE ORANTISIZ BUTONLAR)
 elif st.session_state.step == 'proposal':
     st.markdown("<h1>Meu Amor, Minha Vida... 🌹</h1>", unsafe_allow_html=True)
-    
     st.markdown(f"""
     <div class="letter-box">
         <h2 style="color: #ff4b6b; margin-top: 0;">Minha Linda, ✨</h2>
         <p class="letter-text">
-        Mesmo a milhares de quilômetros de distância, acordar com o seu sorriso em meus pensamentos é o melhor começo de gün. 
+        Mesmo a milhares de quilômetros de distância, acordar com o seu sorriso em meus pensamentos é o melhor começo de dia. 
         O oceano gigante entre o Brasil e a Turquia parece pequeno perto da conexão dos nossos corações. 
         Falar com você e ouvir sua voz é o momento mais precioso do meu dia.
         </p>
@@ -148,38 +152,29 @@ elif st.session_state.step == 'proposal':
     
     st.markdown("<h3>Você aceita ser minha Valentine? ❤️</h3>", unsafe_allow_html=True)
     
-    # Buton Yapısı: İlk koddaki gibi kolonlu ve orantısız
     col1, col2 = st.columns([2, 1])
-    
     with col1:
         if st.button("SIM! 😍", key="yes_btn"):
             st.session_state.step = 'success'
             st.rerun()
-            
     with col2:
         if st.button("Não ❌", key="no_btn"):
-            st.session_state.yes_size += 50 # Agresif büyüme
+            st.session_state.yes_size += 55
             st.rerun()
 
-# --- TELA 3: CELEBRAÇÃO ---
+# TELA DE SUCESSO (CELEBRAÇÃO)
 elif st.session_state.step == 'success':
     st.snow()
     st.markdown("<h1>A melhor resposta do mundo! ❤️</h1>", unsafe_allow_html=True)
-    
-    # Snoopy Abrazo
     st.image("https://media.tenor.com/gfAyB3I48wcAAAAj/snoopy-abrazo-love.gif", use_container_width=True)
-    
     st.markdown("""
-        <div style="text-align: center; background: rgba(255,255,255,0.95); padding: 30px; border-radius: 20px; margin-top: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
-            <h2 style="color: #ff4b6b; margin: 0;">Eu sou o homem mais feliz do mundo!</h2>
-            <p style="font-size: 20px; color: #333; margin-top: 15px;">Te amo mais a cada segundo. <br><b>Feliz Dia dos Namorados!</b> 🌹</p>
+        <div style="text-align: center; background: rgba(255,255,255,0.95); padding: 30px; border-radius: 20px; margin-top: 20px;">
+            <h2 style="color: #ff4b6b;">Eu sou o homem mais feliz do mundo!</h2>
+            <p style="font-size: 20px; color: #333;">Te amo mais a cada segundo. <br><b>Feliz Dia dos Namorados!</b> 🌹</p>
         </div>
     """, unsafe_allow_html=True)
     
-    st.write("") # Boşluk
-    
-    # Tekli geniş koyu buton
     if st.button("Ler a carta novamente 🔄", key="reset_btn"):
         st.session_state.step = 'proposal'
-        st.session_state.yes_size = 35
+        st.session_state.yes_size = 40
         st.rerun()
