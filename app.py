@@ -95,7 +95,7 @@ inject_css(st.session_state.yes_size)
 if st.session_state.step == 'quiz1':
     st.markdown("<h1>🔐 Pergunta 1 de 3</h1>", unsafe_allow_html=True)
     st.write("<p style='text-align: center; font-size: 18px; color: #333;'>Vamos começar com a nossa música...</p>", unsafe_allow_html=True)
-    cevap1 = st.text_input("Qual é o nome da música do George Ezra que o Kayra te enviou?", placeholder="A música que nos une...")
+    cevap1 = st.text_input("Qual é o nome da música do George Ezra que você enviou para o Kayra?", placeholder="A música que nos une...")
     if st.button("Continuar ✨", key="btn1"):
         if cevap1.lower().strip() == "budapest":
             st.session_state.step = 'quiz2'
